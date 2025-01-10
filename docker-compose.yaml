@@ -1,0 +1,34 @@
+version: "3.7"
+services:
+  springboot-app:
+    image: springboot-app
+    build: .
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - springapimysql-net
+    depends_on:
+      - mysqldb
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_PORT: 3306
+
+  mysqldb:
+    container_name: mysqldb
+    image: mysql
+    volumes:
+      - /Users/antonnilsson/Library/Containers/com.docker.docker/Data/:/var/lib/mysql
+    ports:
+      - '3307:3306'
+    networks:
+      - springapimysql-net
+    environment:
+      MYSQL_DATABASE: orderdb
+      MYSQL_USER: springuser
+      MYSQL_PASSWORD: 5SpeckledFrogs
+      MYSQL_ROOT_PASSWORD: root
+networks:
+  springapimysql-net:
